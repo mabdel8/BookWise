@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String?
+  createdAt     DateTime       @default(now())
+  books         UserBook[]
+  goals         ReadingGoal[]
+  sessions      ReadingSession[]
+  notes         Note[]
+  readingPlans  ReadingPlan[]
+}
+
+
+model Book {
+  id          Int       @id @default(autoincrement())
+  title       String
+  author      String
+  isbn        String?   @unique
+  synopsis    String?
+  coverImage  String?
+  publishDate DateTime?
+  userBooks   UserBook[]
+  readingPlans ReadingPlan[]
+}
+
+model UserBook {
+  id        Int            @id @default(autoincrement())
+  userId    Int
+  bookId    Int
+  status    String         // "READING", "WANT_TO_READ", "COMPLETED"
+  startDate DateTime?
+  endDate   DateTime?
+  user      User           @relation(fields: [userId], references: [id])
+  book      Book           @relation(fields: [bookId], references: [id])
+  sessions  ReadingSession[]
+  notes     Note[]
+}
+
+model ReadingSession {
+  id          Int       @id @default(autoincrement())
+  userId    Int
+  userBookId  Int
+  startTime   DateTime
+  endTime     DateTime?
+  pagesRead   Int
+  userBook    UserBook  @relation(fields: [userBookId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Note {
+  id          Int       @id @default(autoincrement())
+  userId    Int
+  content     String
+  userBookId  Int
+  createdAt   DateTime  @default(now())
+  userBook    UserBook  @relation(fields: [userBookId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model ReadingGoal {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  targetType  String    // "PAGES", "TIME", "BOOKS"
+  targetValue Int
+  startDate   DateTime
+  endDate     DateTime?
+  status      String    // "PENDING", "ACHIEVED", "MISSED"
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model ReadingPlan {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  bookId      Int?
+  date        DateTime
+  duration    Int       // Duration in minutes
+  pages       Int?      // Number of pages planned to read (optional)
+  status      String    // "PLANNED", "COMPLETED", "SKIPPED", "RESCHEDULED"
+  user        User      @relation(fields: [userId], references: [id])
+  book        Book?     @relation(fields: [bookId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
