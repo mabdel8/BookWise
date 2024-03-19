@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import SearchBooks from "@/components/SearchBooks";
 import Signup from "./signup";
 import Profile from "./userSession";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface User {
   id: number;
@@ -42,13 +44,10 @@ export default function UserList() {
     <div className="flex flex-col justify-center h-screen items-center">
       <div className="">
         <h1>Currently reading</h1>
-        <ul>
-          {users.map(user => (
-            <li key={user.id}>{user.name} - { user.email }</li> // Adjust according to your schema
-          ))}
-        </ul>
       </div>
-      <SearchBooks />
+      <Button asChild>
+        <Link href="/addbook">Add Book</Link>
+      </Button>
     </div>
   );
 }

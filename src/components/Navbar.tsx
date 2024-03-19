@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import Link from 'next/link';
 
+
 const NavBar = () => {
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
     const [username, setUsername] = useState<string | undefined>(undefined);
