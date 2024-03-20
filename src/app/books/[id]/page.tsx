@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/utils/supabaseClient";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import addBookToUserList from "@/app/_services/handleData"
+
+
 
 export default function Page({ params }: { params: { id: string } }) {
     const [book, setBook] = useState<any>(null);
@@ -12,7 +15,7 @@ export default function Page({ params }: { params: { id: string } }) {
     fetch(`https://www.googleapis.com/books/v1/volumes/${params.id}`)
         .then((res) => res.json())
         .then((data) => {
-          setBook(data.volumeInfo);
+          setBook(data);
         });
         console.log(book)
     // Here you would setBook with the fetched book data
@@ -33,7 +36,7 @@ export default function Page({ params }: { params: { id: string } }) {
         userId,
         title: book.title,
         author: book.author,
-        isbn: book.isbn,
+        isbn: book.industryIdentifiers.find((identifier: any) => identifier.type === "ISBN_10")?.identifier,
         coverImage: book.coverImage,
         publishDate: book.publishDate,
       }),
@@ -61,12 +64,12 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
       <div>
         <h1>Book Info:</h1>
-          <h1>Title: {book.title}</h1>
-          <h1>Author: {book.authors}</h1>
-          <h1>Page Count: {book.pageCount}</h1>
-          <h1>Published: {book.publishedDate}</h1>
-          <img src={book.imageLinks.smallThumbnail} alt="" />
-          <Button>Add Book</Button>
+          <h1>Title: {book.volumeInfo.title}</h1>
+          <h1>Author: {book.volumeInfo.authors}</h1>
+          <h1>Page Count: {book.volumeInfo.pageCount}</h1>
+          <h1>Published: {book.volumeInfo.publishedDate}</h1>
+          <img src={book.volumeInfo.imageLinks.smallThumbnail} alt="" />
+          <Button onClick={() => addBookToUserList(book)}>Add Book</Button>
     </div>
   );
 }

@@ -40,10 +40,13 @@ export default function UserList() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
+
+  
   return (
     <div className="flex flex-col justify-center h-screen items-center">
       <div className="">
         <h1>Currently reading</h1>
+
       </div>
       <Button asChild>
         <Link href="/addbook">Add Book</Link>
