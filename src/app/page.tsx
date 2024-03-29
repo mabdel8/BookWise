@@ -8,6 +8,8 @@ import Signup from "./signup";
 import Profile from "./userSession";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Book } from "lucide-react";
+import BookList from "@/components/BookList";
 
 interface User {
   id: number;
@@ -39,14 +41,16 @@ export default function UserList() {
     loadUsers();
   }, []);
 
+
+
   if (loading) return <div>Loading...</div>;
 
-  
+    
   return (
     <div className="flex flex-col justify-center h-screen items-center">
       <div className="">
-        <h1>Currently reading</h1>
-
+        <h1 className="text-2xl">Currently reading:</h1>
+        <BookList />
       </div>
       <Button asChild>
         <Link href="/addbook">Add Book</Link>
