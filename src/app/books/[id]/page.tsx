@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/utils/supabaseClient";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import addBookToUserList from "@/app/_services/handleData"
+import addBookToUserList from "@/app/_services/handleData";
 
 
 

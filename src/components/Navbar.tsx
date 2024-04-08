@@ -38,7 +38,7 @@ const NavBar = () => {
     }, []);
 
     return (
-        <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: 'lightgray' }}>
+        <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: 'black' }}>
             <div>
                 <Link href='/'>Logo</Link>
             </div>

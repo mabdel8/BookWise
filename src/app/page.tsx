@@ -47,7 +47,7 @@ export default function UserList() {
 
     
   return (
-    <div className="flex flex-col justify-center h-screen items-center">
+    <div className="flex flex-col justify-center items-center">
       <div className="">
         <h1 className="text-2xl">Currently reading:</h1>
         <BookList />
