@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import cn from "../lib/utils";
 
+
 export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -20,16 +21,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+
+          
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-black text-white font-sans antialiased",
+          "min-h-screen bg-white font-sans antialiased",
           fontSans.variable
         )}
       >
-        <Navbar />
-        {children}
+          <Navbar />
+          {children}
+
       </body>
-    </html>
+      </html>
   );
 }

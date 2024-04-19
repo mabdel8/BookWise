@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../utils/supabaseClient';
 import { UserBook } from '@prisma/client';
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    NextUIProvider,
+    Image,
+    CardFooter,
+  } from "@nextui-org/react";
 
 // const BookList = () => {
 //     const [books, setBooks] = useState<any[]>([]);
@@ -97,21 +105,53 @@ const BookList = () => {
     if (loading) return <div>Loading books...</div>;
 
     return (
-        <div>
+        <div className='mx-48'>
             {userId !== null
                 ?
-            <div>
-                   <h2>Currently Reading</h2>
-            <ul>
+                <div>
+                    
+                   <h2 className='text-2xl'>Currently Reading:</h2>
+            <ul className='gap-4 grid grid-cols-2 sm:grid-cols-3'>
                 
-                {books.map((book: { id: number; title: string; author: string; coverImage: string; }) => (
-                    <li key={book.id}>{book.title} by {book.author} { <img src={book.coverImage} alt="" /> }</li>
+                        {books.map((book: { id: number; title: string; author: string; coverImage: string; }) => (
+                    // <Card className="py-4 m-4 w-36">
+                    // <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                    //                 <p className="text-tiny uppercase font-bold">{ book.title}</p>
+                    //                 <small className="text-default-500">{book.author}</small>
+                    // </CardHeader>
+                    // <CardBody className="overflow-visible py-2">
+                    //   <Image
+                    //     alt="Card background"
+                    //     className="object-cover rounded-xl"
+                    //                     src={ book.coverImage}
+                    //     width={50}
+                    //   />
+                    // </CardBody>
+                    //         </Card>
+                            <Card  shadow="sm" key={book.id} isPressable onPress={() => console.log("item pressed")}>
+                            <CardBody className="overflow-visible p-0">
+                              <Image
+                                shadow="sm"
+                                radius="lg"
+                                width="100%"
+                                alt={book.title}
+                                className="w-full object-cover h-[140px]"
+                                src={book.coverImage}
+                              />
+                            </CardBody>
+                            <CardFooter className="text-small justify-between">
+                              <b>{book.title}</b>
+                              <p className="text-default-500">{book.author}</p>
+                            </CardFooter>
+                          </Card>
+                    // <li key={book.id}>{book.title} by {book.author} { <img src={book.coverImage} alt="" /> }</li>
                 ))}
             </ul> 
             </div>
             
                 : <h2>Log in to see books that you are reading</h2>
             }
+                      
         </div>
     );
 

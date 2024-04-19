@@ -2,7 +2,7 @@
 // NavBar.tsx
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../utils/supabaseClient';
-import Link from 'next/link';
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 
 
 const NavBar = () => {
@@ -38,22 +38,44 @@ const NavBar = () => {
     }, []);
 
     return (
-        <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', background: 'black' }}>
-            <div>
-                <Link href='/'>Logo</Link>
-            </div>
-            <div>
-                {loggedIn ? (
-                    <span>Welcome, {username}! <button onClick={async () => {
+        <Navbar>
+      <NavbarBrand>
+        
+        <p className="font-bold text-inherit">BookWise</p>
+      </NavbarBrand>
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarItem>
+          <Link color="foreground" href="#">
+            Features
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive>
+          <Link href="#" aria-current="page">
+            Customers
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link color="foreground" href="#">
+            Integrations
+          </Link>
+        </NavbarItem>
+      </NavbarContent>
+      <NavbarContent justify="end">
+        <NavbarItem>
+        {loggedIn ? (
+                    <div>
+                    < Button color="primary" variant="flat" onClick={async () => {
                         await supabase.auth.signOut();
                         setLoggedIn(false);
                         setUsername(undefined);
-                    }}>Log Out</button></span>
+                        }}>Log Out</Button>
+                                            </div>
                 ) : (
-                    <a href="/login">Log In</a>
+                        <Button color="primary" variant="flat"><a href="/login">Log In</a></Button>
                 )}
-            </div>
-        </nav>
+        </NavbarItem>
+      </NavbarContent>
+    </Navbar>
     );
 };
 
