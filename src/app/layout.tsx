@@ -26,13 +26,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-white font-sans antialiased",
+          "min-h-screen font-sans antialiased dark",
           fontSans.variable
         )}
       >
           <Navbar />
           {children}
-
       </body>
       </html>
   );

@@ -41,7 +41,7 @@ const NavBar = () => {
         <Navbar>
       <NavbarBrand>
         
-        <p className="font-bold text-inherit">BookWise</p>
+        <p className="font-bold text-inherit text-lg">BookWise</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>

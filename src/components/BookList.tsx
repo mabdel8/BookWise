@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../utils/supabaseClient';
-import { UserBook } from '@prisma/client';
+import { useState, useEffect } from "react";
+import { supabase } from "../utils/supabaseClient";
+import { UserBook } from "@prisma/client";
 import {
-    Card,
-    CardBody,
-    CardHeader,
-    NextUIProvider,
-    Image,
-    CardFooter,
-  } from "@nextui-org/react";
+  Card,
+  CardBody,
+  CardHeader,
+  NextUIProvider,
+  Image,
+  CardFooter,
+  Divider,
+} from "@nextui-org/react";
 
 // const BookList = () => {
 //     const [books, setBooks] = useState<any[]>([]);
@@ -53,108 +54,114 @@ import {
 let userId: null = null;
 
 async function fetchCurrentlyReadingBooks() {
-    const { data } = await supabase.auth.getSession();
-    const username = data.session?.user?.email;
-    
+  const { data } = await supabase.auth.getSession();
+  const username = data.session?.user?.email;
 
-    let { data: User, error } = await supabase
-            .from("User")
-            .select("*")
-            .eq("email", username);
-    
-    if (User !== null) {
-        userId = (User as any)[0].id;
-    
-       
+  let { data: User, error } = await supabase
+    .from("User")
+    .select("*")
+    .eq("email", username);
 
-        try {
-            let { data: userBooks, error: userBooksError } = await supabase
-                .from('UserBook')
-                .select(`
+  if (User !== null) {
+    userId = (User as any)[0].id;
+
+    try {
+      let { data: userBooks, error: userBooksError } = await supabase
+        .from("UserBook")
+        .select(
+          `
           bookId,
           book:Book(*)
-        `) // Adjust based on your column names and table relationships
-                .eq('userId', userId)
-                .eq('status', 'READING');
-  
-            if (userBooksError) throw userBooksError;
-  
-            // The resulting userBooks array contains UserBook entries along with the related Book details
-            // You can now access the book details for each UserBook entry
-            return userBooks?.map(userBook => userBook.book);
-        } catch (error) {
-            console.error('Error fetching currently reading books:', error);
-            return [];
-        }
+        `
+        ) // Adjust based on your column names and table relationships
+        .eq("userId", userId)
+        .eq("status", "READING");
+
+      if (userBooksError) throw userBooksError;
+
+      // The resulting userBooks array contains UserBook entries along with the related Book details
+      // You can now access the book details for each UserBook entry
+      return userBooks?.map((userBook) => userBook.book);
+    } catch (error) {
+      console.error("Error fetching currently reading books:", error);
+      return [];
     }
+  }
 }
 
 const BookList = () => {
-    const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    fetchCurrentlyReadingBooks().then((books) => {
+      setBooks(books as any);
+      setLoading(false);
+    });
+  }, []);
 
+  if (loading) return <div>Loading books...</div>;
 
-    useEffect(() => {
-        fetchCurrentlyReadingBooks().then(books => {
-            setBooks(books as any);
-            setLoading(false);
-        });
-    }, []);
+  return (
+    <div className="">
+      {userId !== null ? (
+        <div>
+                  <h2 className="text-inherit text-xl font-bold mb-2">Currently Reading:</h2>
+                  <p className="text-default-500">list of all the books you are reading</p>
+                  <Divider className="my-4" />
+          <ul className="gap-4 grid grid-cols-1 mb-2">
+            {books.map(
+              (book: {
+                id: number;
+                title: string;
+                author: string;
+                coverImage: string;
+              }) => (
+                // <Card className="py-4 m-4 w-36">
+                // <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                //                 <p className="text-tiny uppercase font-bold">{ book.title}</p>
+                //                 <small className="text-default-500">{book.author}</small>
+                // </CardHeader>
+                // <CardBody className="overflow-visible py-2">
+                //   <Image
+                //     alt="Card background"
+                //     className="object-cover rounded-xl"
+                //                     src={ book.coverImage}
+                //     width={50}
+                //   />
+                // </CardBody>
+                //         </Card>
+                <Card
+                  shadow="sm"
+                  key={book.id}
+                  isPressable
+                  onPress={() => console.log("item pressed")}
+                >
+                  <CardFooter className="text-small justify-between">
+                    <div className="flex gap-1">
+                      {" "}
+                      <Image
+                        alt="Card background"
+                        className="object-cover rounded-xl"
+                        src={book.coverImage}
+                        width={30}
+                      />
+                      <b className="h-auto content-center">{book.title}</b>
+                    </div>
 
-    if (loading) return <div>Loading books...</div>;
-
-    return (
-        <div className='mx-48'>
-            {userId !== null
-                ?
-                <div>
-                    
-                   <h2 className='text-2xl'>Currently Reading:</h2>
-            <ul className='gap-4 grid grid-cols-2 sm:grid-cols-3'>
-                
-                        {books.map((book: { id: number; title: string; author: string; coverImage: string; }) => (
-                    // <Card className="py-4 m-4 w-36">
-                    // <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                    //                 <p className="text-tiny uppercase font-bold">{ book.title}</p>
-                    //                 <small className="text-default-500">{book.author}</small>
-                    // </CardHeader>
-                    // <CardBody className="overflow-visible py-2">
-                    //   <Image
-                    //     alt="Card background"
-                    //     className="object-cover rounded-xl"
-                    //                     src={ book.coverImage}
-                    //     width={50}
-                    //   />
-                    // </CardBody>
-                    //         </Card>
-                            <Card  shadow="sm" key={book.id} isPressable onPress={() => console.log("item pressed")}>
-                            <CardBody className="overflow-visible p-0">
-                              <Image
-                                shadow="sm"
-                                radius="lg"
-                                width="100%"
-                                alt={book.title}
-                                className="w-full object-cover h-[140px]"
-                                src={book.coverImage}
-                              />
-                            </CardBody>
-                            <CardFooter className="text-small justify-between">
-                              <b>{book.title}</b>
-                              <p className="text-default-500">{book.author}</p>
-                            </CardFooter>
-                          </Card>
-                    // <li key={book.id}>{book.title} by {book.author} { <img src={book.coverImage} alt="" /> }</li>
-                ))}
-            </ul> 
-            </div>
-            
-                : <h2>Log in to see books that you are reading</h2>
-            }
-                      
+                    <p className="text-default-500">{book.author}</p>
+                  </CardFooter>
+                </Card>
+                // <li key={book.id}>{book.title} by {book.author} { <img src={book.coverImage} alt="" /> }</li>
+              )
+            )}
+          </ul>
         </div>
-    );
-
- }
+      ) : (
+        <h2>Log in to see books that you are reading</h2>
+      )}
+    </div>
+  );
+};
 
 export default BookList;
