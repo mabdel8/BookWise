@@ -1,4 +1,4 @@
-![Alt text] (./screeny.png)
+![alt text](https://github.com/mabdel8/BookWise/blob/datawork/screeny.png?raw=true)
 
 ## Getting Started
 
