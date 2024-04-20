@@ -1,4 +1,4 @@
-![Alt text] ([./screeny.png](https://github.com/mabdel8/BookWise/blob/datawork/screeny.png))
+[![Alt text] ([./screeny.png](https://github.com/mabdel8/BookWise/blob/datawork/screeny.png))](https://github.com/mabdel8/BookWise/blob/datawork/screeny.png)
 
 ## Getting Started
 
