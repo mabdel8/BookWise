@@ -28,7 +28,7 @@ const SearchBooks = () => {
         onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setQuery(e.target.value)}
         placeholder="search for books..."
       />
-      <div className='hidden lg:block lg:absolute lg:top-12 lg:right-unit-8xl'><Kbd keys={["command"]}>K</Kbd></div>
+      <div style={{ transform: 'translateX(460px)'}} className='hidden lg:block lg:absolute lg:top-12'><Kbd keys={["command"]}>K</Kbd></div>
       <ul className='absolute z-20 bg-black rounded-lg'>
         {books.map((book: any) => (
           <li className='p-2' key={book.id}>
