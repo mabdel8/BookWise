@@ -1,4 +1,5 @@
 // components/SearchBooks.tsx
+import { Divider, Input, Kbd } from '@nextui-org/react';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
@@ -19,20 +20,22 @@ const SearchBooks = () => {
   }, [query]);
 
   return (
-    <div className=''>
-      <input
+    <div className='mb-4'>
+      <Input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for books"
-        className='p-2 border border-gray-300 rounded-lg w-full'
+        variant="bordered"
+        onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setQuery(e.target.value)}
+        placeholder="search for books..."
       />
-      <ul>
+      <div className='hidden lg:block lg:absolute lg:top-12 lg:right-unit-8xl'><Kbd keys={["command"]}>K</Kbd></div>
+      <ul className='absolute z-20 bg-black rounded-lg'>
         {books.map((book: any) => (
           <li className='p-2' key={book.id}>
             <Link href={`/books/${book.id}`}>
                 {book.volumeInfo.title}
             </Link>
+            <Divider className="my-4" />
           </li>
         ))}
       </ul>

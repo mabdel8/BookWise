@@ -9,6 +9,7 @@ import {
   Image,
   CardFooter,
   Divider,
+  Progress,
 } from "@nextui-org/react";
 
 // const BookList = () => {
@@ -136,8 +137,10 @@ const BookList = () => {
                   key={book.id}
                   isPressable
                   onPress={() => console.log("item pressed")}
-                >
-                  <CardFooter className="text-small justify-between">
+                    >
+                        <Progress color="danger" size='sm' aria-label="Loading..." value={70} />
+                        <CardFooter className="text-small justify-between">
+                            
                     <div className="flex gap-1">
                       {" "}
                       <Image
@@ -150,7 +153,9 @@ const BookList = () => {
                     </div>
 
                     <p className="text-default-500">{book.author}</p>
-                  </CardFooter>
+                        </CardFooter>
+                        
+                        
                 </Card>
                 // <li key={book.id}>{book.title} by {book.author} { <img src={book.coverImage} alt="" /> }</li>
               )
@@ -165,3 +170,14 @@ const BookList = () => {
 };
 
 export default BookList;
+
+//<Progress
+//    label="Pages read"
+//      size="sm"
+//      value={4000}
+//      maxValue={10000}
+//      color="success"
+//      formatOptions={{style: "percent"}}
+//     showValueLabel={true}
+//      className="max-w-md px-2"
+//    />

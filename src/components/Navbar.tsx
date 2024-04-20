@@ -41,11 +41,11 @@ const NavBar = () => {
         <Navbar>
       <NavbarBrand>
         
-        <p className="font-bold text-inherit text-lg">BookWise</p>
+        <Link href='/' className="font-bold text-inherit text-lg">BookWise</Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link href="#">
             Features
           </Link>
         </NavbarItem>
@@ -55,7 +55,7 @@ const NavBar = () => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <Link href="#">
             Integrations
           </Link>
         </NavbarItem>
