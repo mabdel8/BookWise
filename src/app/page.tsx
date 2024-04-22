@@ -2,7 +2,7 @@
 
 // import Image from "next/image";
 import { supabase } from "../utils/supabaseClient";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import SearchBooks from "@/components/SearchBooks";
 import Signup from "./signup";
 import Profile from "./userSession";
@@ -27,10 +27,18 @@ import {
   Spinner,
   Divider,
   User,
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Chip,
 } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Calendar } from "@nextui-org/calendar";
 import { parseDate } from "@internationalized/date";
+import useLoadUser from "./useLoadUser";
 
 interface User {
   id: number;
@@ -43,6 +51,23 @@ export default function UserList() {
   const [loading, setLoading] = useState(true);
   const currentDate = new Date();
   const formattedDate = currentDate.toISOString().split("T")[0];
+  const [profile, setProfile] = useState<any>();
+  useLoadUser();
+  
+
+  useEffect(() => {
+    async function loadProfile() {
+      try {
+        setProfile(await useLoadUser());
+      } catch (error) {
+        console.error(error);
+      } finally
+      {
+        setLoading(false);
+      }
+    }
+    loadProfile();
+  }, []);
 
   useEffect(() => {
     async function loadUsers() {
@@ -133,30 +158,67 @@ export default function UserList() {
               />
               <div className="">Settings</div>
             </Link>
+
             <User
-              className="mt-16"
-              name={users[0].email}
-              description={
-                <Link
-                  href="https://twitter.com/jrgarciadev"
-                >
-                  @jrgarciadev
-                </Link>
-              }
-              avatarProps={{
-                src: "https://avatars.githubusercontent.com/u/30373422?v=4",
-              }}
-            />
+            className="mt-16"
+            name={'nothing'}
+            description={
+              <Link href="https://twitter.com/jrgarciadev">@jrgarciadev</Link>
+            }
+            avatarProps={{
+              src: "https://avatars.githubusercontent.com/u/30373422?v=4",
+            }}
+          /> 
+            
           </div>
           <div className="col-span-10 lg:col-span-8 xl:col-span-6 lg:px-16 mt-10">
             <SearchBooks />
             <BookList />
           </div>
           <div className="hidden lg:block lg:col-span-4 mt-10">
-            <Calendar
-              aria-label="Date (No Selection)"
-              defaultValue={parseDate(formattedDate)}
-            />
+            <div className="mb-4">
+              <Calendar
+                aria-label="Date (No Selection)"
+                defaultValue={parseDate(formattedDate)}
+              />
+            </div>
+            <Table removeWrapper aria-label="Example static collection table">
+              <TableHeader>
+                <TableColumn>NAME</TableColumn>
+                <TableColumn>ROLE</TableColumn>
+                <TableColumn>STATUS</TableColumn>
+              </TableHeader>
+              <TableBody>
+                <TableRow key="1">
+                  <TableCell>Tony Reichert</TableCell>
+                  <TableCell>CEO</TableCell>
+                  <TableCell>
+                    <Chip color="warning">Reading</Chip>
+                  </TableCell>
+                </TableRow>
+                <TableRow key="2">
+                  <TableCell>Zoey Lang</TableCell>
+                  <TableCell>Technical Lead</TableCell>
+                  <TableCell>
+                    <Chip color="success">Read</Chip>
+                  </TableCell>
+                </TableRow>
+                <TableRow key="3">
+                  <TableCell>Jane Fisher</TableCell>
+                  <TableCell>Senior Developer</TableCell>
+                  <TableCell>
+                    <Chip color="warning">Reading</Chip>
+                  </TableCell>
+                </TableRow>
+                <TableRow key="4">
+                  <TableCell>William Howard</TableCell>
+                  <TableCell>Community Manager</TableCell>
+                  <TableCell>
+                    <Chip color="danger">Plan-to</Chip>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </div>
         </div>
         <div className="fixed hidden dark:md:block dark:opacity-70 -top-[80%] -right-[60%] 2xl:-top-[60%] 2xl:-right-[45%] z-0 rotate-12">

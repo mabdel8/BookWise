@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
+  id            String           @id @default(uuid())
   email         String         @unique
   name          String?
   createdAt     DateTime       @default(now())
@@ -37,11 +37,13 @@ model Book {
 
 model UserBook {
   id        Int            @id @default(autoincrement())
-  userId    Int
+  userId    String
   bookId    Int
   status    String         // "READING", "WANT_TO_READ", "COMPLETED"
   startDate DateTime?
   endDate   DateTime?
+  totalPages Int           // Total pages in the book
+  pagesRead Int            // Pages the user has read
   user      User           @relation(fields: [userId], references: [id])
   book      Book           @relation(fields: [bookId], references: [id])
   sessions  ReadingSession[]
@@ -50,7 +52,7 @@ model UserBook {
 
 model ReadingSession {
   id          Int       @id @default(autoincrement())
-  userId    Int
+  userId    String
   userBookId  Int
   startTime   DateTime
   endTime     DateTime?
@@ -61,7 +63,7 @@ model ReadingSession {
 
 model Note {
   id          Int       @id @default(autoincrement())
-  userId    Int
+  userId    String
   content     String
   userBookId  Int
   createdAt   DateTime  @default(now())
@@ -71,7 +73,7 @@ model Note {
 
 model ReadingGoal {
   id          Int       @id @default(autoincrement())
-  userId      Int
+  userId      String
   targetType  String    // "PAGES", "TIME", "BOOKS"
   targetValue Int
   startDate   DateTime
@@ -82,7 +84,7 @@ model ReadingGoal {
 
 model ReadingPlan {
   id          Int       @id @default(autoincrement())
-  userId      Int
+  userId      String
   bookId      Int?
   date        DateTime
   duration    Int       // Duration in minutes

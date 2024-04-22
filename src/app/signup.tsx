@@ -29,7 +29,7 @@ const Signup = () => {
   };
 
   return (
-    <div>
+    <div className='dark bg-black '>
       <h2>Signup</h2>
       <form onSubmit={handleSignup}>
         <input

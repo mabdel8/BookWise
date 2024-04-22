@@ -138,7 +138,7 @@ const BookList = () => {
                   isPressable
                   onPress={() => console.log("item pressed")}
                     >
-                        <Progress color="danger" size='sm' aria-label="Loading..." value={70} />
+                        <Progress color="success" size='sm' aria-label="Loading..." value={70} />
                         <CardFooter className="text-small justify-between">
                             
                     <div className="flex gap-1">
